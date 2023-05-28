@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drink Water Reminder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: brown;
+      color: aliceblue;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    button {
+      margin-top: 10px;
+    }
+    #status {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    @media only screen and (min-width: 480px) {
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      button {
+        width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Drink Water Reminder</h1>
+
+  <label for="interval">Reminder Interval (in seconds):</label>
+  <input type="number" id="interval" min="1" step="1">
+  <button id="startBtn">Start Reminder</button>
+  <button id="stopBtn">Stop Reminder</button>
+
+  <div id="status"></div>
+
+  <script>
+    let intervalId;
+
+    function startReminder() {
+      const intervalInput = document.getElementById('interval');
+      const interval = parseInt(intervalInput.value);
+
+      if (isNaN(interval) || interval <= 0) {
+        alert('Please enter a valid interval in seconds.');
+        return;
+      }
+
+      intervalId = setInterval(showReminder, interval * 1000);
+      updateStatus(`Reminder started. Interval: ${interval} seconds.`);
+    }
+
+    function stopReminder() {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+        updateStatus('Reminder stopped.');
+      }
+    }
+
+    function showReminder() {
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      const message = `Drink water now! Time: ${time}`;
+      alert(message);
+    }
+
+    function updateStatus(message) {
+      const statusDiv = document.getElementById('status');
+      statusDiv.textContent = message;
+    }
+
+    document.getElementById('startBtn').addEventListener('click', startReminder);
+    document.getElementById('stopBtn').addEventListener('click', stopReminder);
+  </script>
+</body>
+</html>
